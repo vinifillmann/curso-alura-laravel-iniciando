@@ -33,6 +33,11 @@
         }
     },
     "scripts": {
+        "git-update": [
+            "git add .",
+            "git commit -m \"Avançando no curso\"",
+            "git push origin master"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
