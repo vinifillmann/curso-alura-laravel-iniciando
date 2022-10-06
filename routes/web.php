@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource("/series", SeriesController::class)
-    ->only(["index", "create", "store", "destroy"]);
+    ->except(["show"]);
 
 // Route::controller(SeriesController::class)->group(function () {
 //     Route::get("/series", "index")->name("series.index");

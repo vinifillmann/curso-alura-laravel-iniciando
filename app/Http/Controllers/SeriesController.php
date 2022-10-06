@@ -10,7 +10,7 @@ class SeriesController extends Controller
     public function index(Request $request)
     {
         $series = Serie::query()->orderBy("nome")->get();
-        $mensagemSucesso = $request->session()->get("mensagem.sucesso");
+        $mensagemSucesso = session("mensagem.sucesso");
 
         return view("series.index")->with("series", $series)->with("mensagemSucesso", $mensagemSucesso);
     }
@@ -22,18 +22,31 @@ class SeriesController extends Controller
 
     public function store(Request $request)
     {
-        Serie::create($request->all());
+        $serie = Serie::create($request->all());
 
-        $request->session()->flash("mensagem.sucesso", "Série adicionada com sucesso!!!");
-
-        return to_route("series.index");
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$serie->nome}' adicionada com sucesso!!!");
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, Serie $series)
     {
-        Serie::destroy($request->series);
-        $request->session()->flash("mensagem.sucesso", "Série deletada com sucesso!!!");
+        $series->delete();
 
-        return to_route("series.index");
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->nome}' foi deletada com sucesso!!!");
+    }
+
+    public function edit(Serie $series)
+    {
+
+        return view("series.edit")->with("series", $series);
+    }
+
+    public function update(Serie $series, Request $request)
+    {
+        $nomeAntigo = $series->nome;
+
+        $series->nome = $request->nome;
+        $series->save();
+
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$nomeAntigo}' editada para '{$series->nome}' com sucesso!!!");
     }
 }
