@@ -13,11 +13,8 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 {{ $serie->nome }}
 
-                <div class="d-flex justify-content-evenly">
-                    <form class="me-1" action="{{ route('series.edit', $serie->id) }}" method="GET">
-                        @csrf
-                        <input class="btn btn-info btn-sm" type="submit" value="/">
-                    </form>
+                <div class="d-flex">
+                    <a href="{{ route('series.edit', $serie->id) }}" class="btn btn-primary btn-sm me-1">E</a>
 
                     <form action="{{ route('series.destroy', $serie->id) }}" method="POST">
                         @csrf
