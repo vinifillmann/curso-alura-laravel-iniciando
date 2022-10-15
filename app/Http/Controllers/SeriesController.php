@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Serie;
+use App\Models\Series;
 use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
     public function index(Request $request)
     {
-        $series = Serie::query()->orderBy("nome")->get();
+        $series = Series::all();
         $mensagemSucesso = session("mensagem.sucesso");
 
         return view("series.index")->with("series", $series)->with("mensagemSucesso", $mensagemSucesso);
@@ -23,31 +23,42 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
-        $serie = Serie::create($request->all());
+        $series = Series::create($request->all());
+        for ($s = 1; $s <= $request->seasonsQty; $s++) {
+            $season = $series->seasons()->create([
+                "number" => $s
+            ]);
+            for ($e = 1; $e <= $request->episodesPerSeason; $e++) {
+                $season->episodes()->create([
+                    "number" => $e
+                ]);
+            }
+        }
 
-        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$serie->nome}' adicionada com sucesso!!!");
+
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->name}' adicionada com sucesso!!!");
     }
 
-    public function destroy(Serie $series)
+    public function destroy(Series $series)
     {
         $series->delete();
 
-        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->nome}' foi deletada com sucesso!!!");
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->name}' foi deletada com sucesso!!!");
     }
 
-    public function edit(Serie $series)
+    public function edit(Series $series)
     {
         // dd($series->seasons);
         return view("series.edit")->with("series", $series);
     }
 
-    public function update(Serie $series, SeriesFormRequest $request)
+    public function update(Series $series, SeriesFormRequest $request)
     {
-        $nomeAntigo = $series->nome;
+        $nomeAntigo = $series->name;
 
         $series->fill($request->all());
         $series->save();
 
-        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$nomeAntigo}' editada para '{$series->nome}' com sucesso!!!");
+        return to_route("series.index")->with("mensagem.sucesso", "A Série '{$nomeAntigo}' editada para '{$series->name}' com sucesso!!!");
     }
 }
