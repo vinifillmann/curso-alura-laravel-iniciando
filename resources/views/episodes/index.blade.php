@@ -1,0 +1,18 @@
+<x-layout title="Episódios">
+
+    <form method="POST">
+        @csrf
+        <ul class="list-group">
+            @foreach ($episodes as $episode)
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Episódio {{ $episode->number }}
+
+                    <input type="checkbox" name="episodes[]" value="{{ $episode->id }}">
+                </li>
+            @endforeach
+        </ul>
+
+        <input class="btn btn-primary mt-2 mb-2" type="submit" value="Salvar">
+    </form>
+
+</x-layout>
