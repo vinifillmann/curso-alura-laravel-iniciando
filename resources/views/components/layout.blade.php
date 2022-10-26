@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="{{ asset("css/app.css") }}">
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand btn btn-dark ml-2" href="{{ route('series.index') }}">Séries</a>
+
+            @auth
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <input type="submit" class="navbar-brand btn btn-dark" value="Logout">
+                </form>
+            @endauth
+
+            @guest
+                @if ($title !== "Login")
+                    <a href="{{ route('login') }}" class="navbar-brand btn btn-dark">Entrar</a>
+                @endif
+            @endguest
+
+        </div>
+    </nav>
+
     <div class="container">
         <h1>{{ $title }}</h1>
 

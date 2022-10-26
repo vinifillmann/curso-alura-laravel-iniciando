@@ -1,1 +1,1 @@
-SELECT * FROM series;
+SELECT * FROM users;
