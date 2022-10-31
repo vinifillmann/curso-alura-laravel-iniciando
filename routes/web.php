@@ -8,6 +8,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SeasonsController;
 use App\Http\Controllers\EpisodesController;
+use App\Mail\SeriesCreated;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,22 @@ use App\Http\Controllers\EpisodesController;
 |
 */
 
+Route::get('/', function () {
+    return redirect("/series");
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get("/email", function () {
+    return new SeriesCreated(
+        "Bob Esponja",
+        6,
+        20,
+        30
+    );
+});
 
 require __DIR__.'/auth.php';
 
