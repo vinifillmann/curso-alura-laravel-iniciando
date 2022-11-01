@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SeriesCreated as EventsSeriesCreated;
+use App\Events\SeriesDeleted;
 use App\Models\Series;
 use Illuminate\Http\Request;
 use App\Http\Requests\SeriesFormRequest;
@@ -36,26 +38,24 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
+        $coverPath = $request->file("cover")->store("series_cover", "public");
+        $request->coverPath = $coverPath;
         $series = $this->repository->add($request);
 
-        $usersList = User::all();
-        foreach ($usersList as $index => $user) {
-            $email = new SeriesCreated(
-                $series->name,
-                $series->id,
-                $request->seasonsQty,
-                $request->episodesPerSeason
-            );
-            $when = now()->addSeconds($index * 3);
-            Mail::to($user)->later($when, $email);
-        }
+        $seriesCreatedEvent = new EventsSeriesCreated(
+            $series->name,
+            $series->id,
+            $request->seasonsQty,
+            $request->episodesPerSeason
+        );
+        event($seriesCreatedEvent);
 
         return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->name}' adicionada com sucesso!!!");
     }
 
     public function destroy(Series $series)
     {
-        $series->delete();
+        SeriesDeleted::dispatch($series);
 
         return to_route("series.index")->with("mensagem.sucesso", "A Série '{$series->name}' foi deletada com sucesso!!!");
     }

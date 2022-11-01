@@ -7,6 +7,17 @@
             {{ $mensagemSucesso }}
         </div>
     @endisset
+    
+    <div class="d-flex justify-content-center my-3">
+        @php
+            if($series->cover_path) {
+                $path = $series->cover_path;
+            } else {
+                $path = "series_cover/padrao.jpg";
+            }
+        @endphp
+        <img src="{{ asset('storage/' . $path) }}" style="height: 400px" alt="Capa da série" class="img-fluid">
+    </div>
 
     <ul class="list-group">
         @foreach ($seasons as $season)

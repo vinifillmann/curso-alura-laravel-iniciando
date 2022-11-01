@@ -2,7 +2,7 @@
 
 # {{ $nomeSerie }} foi criada
 
-A série {{ $nomeSerie }} com {{ $qtdTemporadas }} temporadas, cada uma contendo {{ $episodiosPorTemporada }}.
+A série {{ $nomeSerie }} com {{ $qtdTemporadas }} temporadas, cada uma contendo {{ $episodiosPorTemporada }} episódios.
 
 Acesse aqui:
 
