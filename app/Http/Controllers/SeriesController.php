@@ -6,7 +6,7 @@ use App\Events\SeriesCreated as EventsSeriesCreated;
 use App\Events\SeriesDeleted;
 use App\Models\Series;
 use Illuminate\Http\Request;
-use App\Http\Requests\SeriesFormRequest;
+use App\Http\Requests\SeriesRequest;
 use App\Mail\SeriesCreated;
 use App\Models\User;
 use App\Repositories\SeriesRepository;
@@ -36,7 +36,7 @@ class SeriesController extends Controller
         return view("series.create");
     }
 
-    public function store(SeriesFormRequest $request)
+    public function store(SeriesRequest $request)
     {
         $coverPath = $request->hasFile("cover") ? $request->file("cover")->store("series_cover", "public") : NULL;
         $request->coverPath = $coverPath;
@@ -66,7 +66,7 @@ class SeriesController extends Controller
         return view("series.edit")->with("series", $series);
     }
 
-    public function update(Series $series, SeriesFormRequest $request)
+    public function update(Series $series, SeriesRequest $request)
     {
         $nomeAntigo = $series->name;
 

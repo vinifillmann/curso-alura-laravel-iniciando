@@ -1,13 +1,6 @@
 <?php
 
-use Illuminate\Http\Client\Request;
-use App\Http\Middleware\Autenticador;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\SeriesController;
-use App\Http\Controllers\SeasonsController;
-use App\Http\Controllers\EpisodesController;
 use App\Mail\SeriesCreated;
 
 /*
@@ -39,4 +32,3 @@ Route::get("/email", function () {
 });
 
 require __DIR__.'/auth.php';
-
